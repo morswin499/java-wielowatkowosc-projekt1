@@ -85,28 +85,25 @@ public class ProgressRace {
                 }
             }
         } else {
-            // TODO: Tutaj trzeba zaimplementować ExecutorService
-            // 1. Stworzyć pulę np. Executors.newFixedThreadPool(3)
-            // 2. Przekazać zadania simulateWork przez executor.submit()
-            // 3. Zamknąć executor i poczekać na zakończenie (awaitTermination)
 
             // 1. Stworzyć pulę np. Executors.newFixedThreadPool(3)
-    java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newFixedThreadPool(3);
+            java.util.concurrent.ExecutorService executor =
+                    java.util.concurrent.Executors.newFixedThreadPool(3);
 
-    for (int i = 0; i < 10; i++) {
-        final int index = i;
-        // 2. Przekazać zadania simulateWork przez executor.submit()
-        executor.submit(() -> simulateWork(bars[index]));
-    }
+            for (int i = 0; i < 10; i++) {
+                final int index = i;
+                // 2. Przekazać zadania simulateWork przez executor.submit()
+                executor.submit(() -> simulateWork(bars[index]));
+            }
 
-    // 3.Zamknąc executor i poczekać na zakończenie (awaitTermination)
-    executor.shutdown();
-    try {
-        // Czekaj max 10 min na zakonczenie wszystkich zadan
-        executor.awaitTermination(10, java.util.concurrent.TimeUnit.MINUTES);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
+            // 3.Zamknąc executor i poczekać na zakończenie (awaitTermination)
+            executor.shutdown();
+            try {
+                // Czekaj max 10 min na zakonczenie wszystkich zadan
+                executor.awaitTermination(10, java.util.concurrent.TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         long endTime = System.currentTimeMillis();
         System.out.println("Wyścig zakończony! Czas trwania: " + (endTime - startTime) + " ms");
