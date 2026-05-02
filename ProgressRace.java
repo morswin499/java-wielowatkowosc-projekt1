@@ -59,25 +59,37 @@ public class ProgressRace {
         }
 
         frame.setVisible(true);
+        // =========================================================
+        // PRZEŁĄCZNIK ARCHITEKTURY
+        // false = Klasyczne podejście (Thread + Runnable)
+        // true = Wysokopoziomowa pula (ExecutorService)
+        // =========================================================
+        boolean USE_THREAD_POOL = false;
 
         System.out.println("Wyścig rozpoczęty!");
         long startTime = System.currentTimeMillis();
         // TWORZENIE I URUCHAMIANIE KLASYCZNYCH WĄTKÓW
-        Thread[] threads = new Thread[10];
+        if (!USE_THREAD_POOL) {
+            Thread[] threads = new Thread[10];
 
-        for (int i = 0; i < 10; i++) {
-            final int index = i;
-            threads[i] = new Thread(() -> simulateWork(bars[index]));
-            threads[i].start();
-        }
-        // OCZEKIWANIE NA ZAKOŃCZENIE WSZYSTKICH WĄTKÓW
-        for (int i = 0; i < 10; i++) {
-            try {
-                threads[i].join();
-            } catch (InterruptedException e) {
+            for (int i = 0; i < 10; i++) {
+                final int index = i;
+                threads[i] = new Thread(() -> simulateWork(bars[index]));
+                threads[i].start();
             }
+            // OCZEKIWANIE NA ZAKOŃCZENIE WSZYSTKICH WĄTKÓW
+            for (int i = 0; i < 10; i++) {
+                try {
+                    threads[i].join();
+                } catch (InterruptedException e) {
+                }
+            }
+        } else {
+            // TODO: Tutaj trzeba zaimplementować ExecutorService
+            // 1. Stworzyć pulę np. Executors.newFixedThreadPool(3)
+            // 2. Przekazać zadania simulateWork przez executor.submit()
+            // 3. Zamknąć executor i poczekać na zakończenie (awaitTermination)
         }
-
         long endTime = System.currentTimeMillis();
         System.out.println("Wyścig zakończony! Czas trwania: " + (endTime - startTime) + " ms");
 
