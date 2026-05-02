@@ -6,43 +6,35 @@ import javax.swing.UIManager;
 public class ProgressRace {
 
     private static void simulateWork(JProgressBar bar) {
-        // Tworzymy nowy wątek dla każdego paska postępu (klasyczne podejście)
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int progress = 0;
 
-                while (progress < 100) {
-                    // Losowy przyrost postępu (od 1 do 5), aby każdy "plik" pobierał się w innym
-                    // tempie
-                    progress += (int) (Math.random() * 5) + 1;
-                    if (progress > 100)
-                        progress = 100;
+        int progress = 0;
 
-                    final int currentProgress = progress;
+        while (progress < 100) {
+            // Losowy przyrost postępu (od 1 do 5), aby każdy "plik" pobierał się w innym
+            // tempie
+            progress += (int) (Math.random() * 5) + 1;
+            if (progress > 100)
+                progress = 100;
 
-                    // Dobra praktyka: aktualizacje interfejsu graficznego (Swing)
-                    // powinny być zlecane do głównego wątku okienkowego (Event Dispatch Thread)
-                    javax.swing.SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            bar.setValue(currentProgress);
-                        }
-                    });
+            final int currentProgress = progress;
 
-                    // Usypiamy wątek na losowy czas (np. od 50 do 150 ms)
-                    try {
-                        Thread.sleep((int) (Math.random() * 100) + 50);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
+            // Dobra praktyka: aktualizacje interfejsu graficznego (Swing)
+            // powinny być zlecane do głównego wątku okienkowego (Event Dispatch Thread)
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    bar.setValue(currentProgress);
                 }
-            }
-        });
+            });
 
-        // Uruchamiamy utworzony wątek
-        thread.start();
+            // Usypiamy wątek na losowy czas (np. od 50 do 150 ms)
+            try {
+                Thread.sleep((int) (Math.random() * 100) + 50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -69,12 +61,25 @@ public class ProgressRace {
         frame.setVisible(true);
 
         System.out.println("Wyścig rozpoczęty!");
+        long startTime = System.currentTimeMillis();
+        // TWORZENIE I URUCHAMIANIE KLASYCZNYCH WĄTKÓW
+        Thread[] threads = new Thread[10];
 
-        // Uruchamiamy symulację dla każdego z 10 pasków
         for (int i = 0; i < 10; i++) {
-            simulateWork(bars[i]);
+            final int index = i;
+            threads[i] = new Thread(() -> simulateWork(bars[index]));
+            threads[i].start();
+        }
+        // OCZEKIWANIE NA ZAKOŃCZENIE WSZYSTKICH WĄTKÓW
+        for (int i = 0; i < 10; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+            }
         }
 
+        long endTime = System.currentTimeMillis();
+        System.out.println("Wyścig zakończony! Czas trwania: " + (endTime - startTime) + " ms");
 
     }
 }
