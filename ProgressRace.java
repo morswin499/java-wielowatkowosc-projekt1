@@ -4,6 +4,16 @@ import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 
 public class ProgressRace {
+
+    private static void simulateWork(JProgressBar bar) {
+        int progress = 0;
+
+        while (progress < 100) {
+            progress += 1;
+            bar.setValue(progress);
+        }
+    }
+
     public static void main(String[] args) {
 
         try {
