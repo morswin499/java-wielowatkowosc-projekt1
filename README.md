@@ -54,19 +54,19 @@ Mechanizm użycia puli wątków wykorzystuje kolejkowanie zadań, które powoduj
 - [x] Zaimplementowanie pomiaru całkowitego czasu wykonania (`System.currentTimeMillis()`).
 
 ### Faza 3: Profilowanie i Analiza
-- [ ] Wykonanie pomiarów z użyciem profilera (np. VisualVM lub narzędzia `jcmd`).
-- [ ] Wygenerowanie wykresów zużycia pamięci RAM i obciążenia CPU dla podejścia klasycznego.
-- [ ] Wygenerowanie wykresów zużycia pamięci i CPU dla puli wątków.
-- [ ] Zrzut zrzutów ekranu osi czasu pokazujących stany wątków (Running, Sleeping, Waiting).
+- [x] Wykonanie pomiarów z użyciem profilera (np. VisualVM lub narzędzia `jcmd`).
+- [x] Wygenerowanie wykresów zużycia pamięci RAM i obciążenia CPU dla podejścia klasycznego.
+- [x] Wygenerowanie wykresów zużycia pamięci i CPU dla puli wątków.
+- [x] Zrzut zrzutów ekranu osi czasu pokazujących stany wątków (Running, Sleeping, Waiting).
 
 ### Faza 4: Dokumentacja
-- [ ] Opracowanie wniosków porównujących oba podejścia.
-- [ ] Wyjaśnienie zjawiska narzutu na tworzenie wątków oraz zalet kolejkowania zadań.
-- [ ] Złożenie końcowego sprawozdania.
+- [x] Opracowanie wniosków porównujących oba podejścia.
+- [x] Wyjaśnienie zjawiska narzutu na tworzenie wątków oraz zalet kolejkowania zadań.
+- [x] Złożenie końcowego sprawozdania.
 
 ## Podsumowanie
 
-Na podstawie otrzymanych wyników można stwierdzić, że wysokopoziomowe mechanizmy zarządzania współbieżnością są bezpieczniejesz i wydajniejsze. Podejście klasyczne pomimo prostoty w implementacji, staje się nieefektywne przy dużej ilości zadań i braku kontroli nad zasobami sprzętowymi.
+Na podstawie otrzymanych wyników można stwierdzić, że wysokopoziomowe mechanizmy zarządzania współbieżnością są bezpieczniejsze i wydajniejsze. Podejście klasyczne pomimo prostoty w implementacji, staje się nieefektywne przy dużej ilości zadań i braku kontroli nad zasobami sprzętowymi.
 
 ## Autorzy
 - Mateusz Moskwin
