@@ -37,23 +37,27 @@ Podczas pracy w trybie klasycznym zaobserwowano zjawisko narzutu na tworzenie w�
 
 Mechanizm użycia puli wątków wykorzystuje kolejkowanie zadań, które powoduje, że aplikacja nie przekroczy założonego limitu wątków oraz eliminuje konieczność niszczenia wątków i ponownych inicjalizacji.
 
-## Wyniki profilowania
+### Przebiegi otrzymane w wyniku profilowania
 
-### Zużycie pamięci
+- Zużycie pamięci
 
 | Podejście klasyczne      | Podejście wysokopoziomowe|
 | ----------------------   | ----------------------   |
 | ![Zużycie pamięci podejście klasyczne](./img/pamiec_klasyczne.png)   | ![Zużycie pamięci podejście wysokopoziomowe](./img/pamiec_pula.png)|
 
-### Zużycie CPU
+- Zużycie CPU
+
 | Podejście klasyczne      | Podejście wysokopoziomowe|
 | ----------------------   | ----------------------   |
 | ![Zużycie CPU podejście klasyczne](./img/cpu_klasyczne.png)   | ![Zużycie CPU podejście wysokopoziomowe](./img/cpu_pula.png)|
 
-### Stany wątków 
+- Stany wątków
+
 | Podejście klasyczne      | Podejście wysokopoziomowe|
 | ----------------------   | ----------------------   |
 | ![Stany wątków podejście klasyczne](./img/watki_klasyczne.png)   | ![Stany wątków podejście wysokopoziomowe](./img/watki_pula.png)|
+
+Mimo że podejście klasyczne wykazuje krótszy czas wykonania, to powoduje ono większe obciążenie procesora i generuje więcej wątków. Wykorzystanie puli wątków redukuje zużycie pamięci i sprawia, że obciążenie CPU jest bardziej stabilne.
 
 ## Lista zadań (TODO)
 
