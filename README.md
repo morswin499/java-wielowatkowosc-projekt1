@@ -20,6 +20,23 @@ Aby przetestować konkretne podejście, przed kompilacją zmień wartość tej z
 - false – Uruchamia symulację w trybie klasycznym. System operacyjny powołuje do życia 10 wątków (Thread), które ruszają natychmiast, walcząc o czas procesora.
 
 - true – Uruchamia symulację z użyciem puli wątków (ExecutorService). Pula dysponuje jedynie 3 wątkami roboczymi dla 10 zadań. Na ekranie widać mechanizm kolejkowania (paski ładują się partiami po trzy), co chroni procesor przed zbytnim obciążeniem.
+
+## Analiza techniczna
+
+Do otrzymania przebiegów zużycia pamięci RAM i CPU wykorzystano narzędzie VisualVM
+
+### Porównanie mechanizmów współbieżności
+
+W podejściu klasycznym wątki są tworzone i niszczone ręcznie oraz każdy z nich rezerwuje około 1 MB pamięci na stos. Przy starcie zadań obecne są gwałtowne skoki obciążenia procesora, a skalowanie jest oceniane jako słabe ze względu na ryzyko awarii systemu przy dużej ilości zadań. Natomiast mechanizm z użyciem puli wątków cechuje się lepszą optymalizacją, zapewnia automatyczne zarządzanie cyklem życia wątków, co upraszcza architekturę aplikacji, stała liczba wątków roboczych zapewnia na dużą oszczędność zasobów, kolejkowanie zadań gwarantuje przewidywalną pracę procesora, a skalowanie jest bardzo dobre zapewniając bezpieczną obsługę dowolnej ilości zadań.
+
+### Narzut na tworzenie wątków
+
+Podczas pracy w trybie klasycznym zaobserwowano zjawisko narzutu na tworzenie wątków, jest to koszt zasobowy i czasowy jaki system ponosi na inicjalizację struktur przed wykonaniem głównego kodu, jest to kosztowne ze względu na każdorazowe generowanie narzutu dla każdego zadania w trybie klasycznym, alokacji pamięci i wywołań systemowych, które generują opóźnienia.
+
+### Zalety kolejkowania zadań
+
+Mechanizm użycia puli wątków wykorzystuje kolejkowanie zadań, które powoduje, że aplikacja nie przekroczy założonego limitu wątków oraz eliminuje konieczność niszczenia wątków i ponownych inicjalizacji.
+
 ## Lista zadań (TODO)
 
 ### Faza 1: Architektura i GUI
@@ -46,6 +63,10 @@ Aby przetestować konkretne podejście, przed kompilacją zmień wartość tej z
 - [ ] Opracowanie wniosków porównujących oba podejścia.
 - [ ] Wyjaśnienie zjawiska narzutu na tworzenie wątków oraz zalet kolejkowania zadań.
 - [ ] Złożenie końcowego sprawozdania.
+
+## Podsumowanie
+
+Na podstawie otrzymanych wyników można stwierdzić, że wysokopoziomowe mechanizmy zarządzania współbieżnością są bezpieczniejesz i wydajniejsze. Podejście klasyczne pomimo prostoty w implementacji, staje się nieefektywne przy dużej ilości zadań i braku kontroli nad zasobami sprzętowymi.
 
 ## Autorzy
 - Mateusz Moskwin
